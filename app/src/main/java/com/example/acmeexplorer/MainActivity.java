@@ -11,19 +11,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.acmeexplorer.Entities.Option;
+import com.example.acmeexplorer.Utils.Constants;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Trip[] trips = new ArrayList<>(Trip.generateTrips(20, 4, 7)).toArray(new Trip[0]);
+    Option[] menuOptions = Constants.menuOptions;
     GridView gridView;
-    CardView cardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,59 +29,52 @@ public class MainActivity extends AppCompatActivity {
 
         //Recupero el grid
         gridView = findViewById(R.id.shortcut_gridview);
-        //Recupero el cardView
-        cardView = findViewById(R.id.shortcut_cardview);
 
         //Adapter para el GridView
-        TripAdapter tripAdapter = new TripAdapter(this, trips);
+        menuAdapter menuAdap = new menuAdapter(this, menuOptions);
 
-        gridView.setAdapter(tripAdapter);
+        gridView.setAdapter(menuAdap);
     }
 }
 
-class TripAdapter extends ArrayAdapter<Trip> {
+class menuAdapter extends ArrayAdapter<Option> {
 
-    Trip[] trips;
-    public TripAdapter(Context context, Trip[] trips){
-        super(context, R.layout.trip_cardview, trips);
-        this.trips = trips;
+    Option[] options;
+    public menuAdapter(Context context, Option[] options){
+        super(context, R.layout.menu_cardview, options);
+        this.options = options;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(final int position, View convertView, ViewGroup parent){
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        convertView = layoutInflater.inflate(R.layout.trip_cardview, null);
+        convertView = layoutInflater.inflate(R.layout.menu_cardview, null);
 
-        //final Class clase = this.trips[position].getClase();
+        final Class clase = this.options[position].getClase();
 
-        TextView textViewTittle = convertView.findViewById(R.id.trip_tittle);
-        TextView textViewCityInit = convertView.findViewById(R.id.trip_cityInit);
-        TextView textViewCityEnd = convertView.findViewById(R.id.trip_cityEnd);
-        TextView textViewDescription = convertView.findViewById(R.id.trip_description);
-        ImageView IVPicture = convertView.findViewById(R.id.trip_picture);
-        RatingBar ratingTrip = convertView.findViewById(R.id.trip_ratingBar);
+        CardView menuCardView = convertView.findViewById(R.id.trip_cardview);
+        TextView textViewTitle = convertView.findViewById(R.id.menu_title);
+        TextView textViewDescription = convertView.findViewById(R.id.menu_description);
+        ImageView IVPicture = convertView.findViewById(R.id.menu_picture);
 
         //Set the content
-        textViewTittle.setText(this.trips[position].getCityEnd());
-        textViewCityInit.setText(this.trips[position].getCityInit());
-        textViewCityEnd.setText(this.trips[position].getCityEnd());
-        textViewDescription.setText(this.trips[position].getDescription());
-        ratingTrip.setRating(this.trips[position].getTotalStars());
-        if (!this.trips[position].getImageUrl().isEmpty()) {
+        textViewTitle.setText(this.options[position].getOptionText());
+        textViewDescription.setText(this.options[position].getDescription());
+
+        if (!this.options[position].getImageUrl().isEmpty()) {
             Picasso.get()
-                    .load(this.trips[position].getImageUrl())
+                    .load(this.options[position].getImageUrl())
                     .placeholder(android.R.drawable.ic_menu_myplaces)
                     .error(android.R.drawable.ic_menu_myplaces)
                     .into(IVPicture);
         }
 
-        IVPicture.setOnClickListener(new View.OnClickListener() {
+        menuCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MainActivity.class);
+                Intent intent = new Intent(getContext(), clase);
                 getContext().startActivity(intent);
             }
         });
-
 
         return convertView;
     }

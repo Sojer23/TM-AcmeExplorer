@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.acmeexplorer.Security.LoginActivity;
+
 public class SplashActivity extends AppCompatActivity {
 
     private final int DURATION_SPLASH=6000;
@@ -18,7 +20,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //Cuando pase el tiempo fijado se lleva a la pantalla de login
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }

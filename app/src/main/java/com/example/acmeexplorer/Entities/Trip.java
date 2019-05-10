@@ -1,4 +1,9 @@
-package com.example.acmeexplorer;
+package com.example.acmeexplorer.Entities;
+
+import android.util.Log;
+import android.widget.Toast;
+
+import com.example.acmeexplorer.Utils.Constants;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,13 +20,16 @@ public class Trip implements Serializable {
     private List<Comment> comments;
     private String code;
     private int price;
-    private Calendar dateInit;
-    private Calendar dateEnd;
+    private long dateInit;
+    private long dateEnd;
     private String imageUrl;
     private float totalStars;
+    private boolean fav;
 
 
-    public Trip(String cityInit, String cityEnd, String description, List<Stage> stages, List<Comment> comments, String code, int price, Calendar dateInit, Calendar dateEnd, String imageUrl, float totalStars) {
+    public Trip(String cityInit, String cityEnd, String description, List<Stage> stages,
+                List<Comment> comments, String code, int price, long dateInit, long dateEnd,
+                String imageUrl, float totalStars, boolean fav) {
         this.cityInit = cityInit;
         this.cityEnd = cityEnd;
         this.description = description;
@@ -33,6 +41,15 @@ public class Trip implements Serializable {
         this.dateEnd = dateEnd;
         this.imageUrl = imageUrl;
         this.totalStars = totalStars;
+        this.fav = fav;
+    }
+
+    public boolean isFav() {
+        return fav;
+    }
+
+    public void setFav(boolean fav) {
+        this.fav = fav;
     }
 
     public float getTotalStars() {
@@ -106,58 +123,68 @@ public class Trip implements Serializable {
         this.price = price;
     }
 
-    public Calendar getDateInit() {
+    public long getDateInit() {
         return dateInit;
     }
 
-    public void setDateInit(Calendar dateInit) {
+    public void setDateInit(long dateInit) {
         this.dateInit = dateInit;
     }
 
-    public Calendar getDateEnd() {
+    public long getDateEnd() {
         return dateEnd;
     }
 
-    public void setDateEnd(Calendar dateEnd) {
+    public void setDateEnd(long dateEnd) {
         this.dateEnd = dateEnd;
     }
 
 
 
-    public static List<Trip> generateTrips(int numTrips, int numStages, int numComments) {
-        List<Trip> trips = new ArrayList<>();
+    public static ArrayList<Trip> generateTrips(int numTrips, int numStages, int numComments) {
+        List<Trip> trips = new ArrayList<Trip>();
 
-        int min = 75, max = 2050, randomNumber;
+        int min = 75, max = 2050, randomNumber, randomPriceStage;
         String cityInit, cityEnd, descripcion, url, code;
-        Calendar dateInit = Calendar.getInstance(), dateEnd;
-        //Stage data
-        List<Stage> stages = new ArrayList<>();
-        String stageTittle, stageDescription;
-        int stagePrice = 0;
-        int totalPrice =0;
-        float commentStars;
-        float avgStars = 0;
-        Calendar stageDateInit;
-        //Comment data
-        List<Comment> comments = new ArrayList<>();
-        String commentTittle, commentAuthor, comment;
+        Calendar dateInit, dateEnd,dateActual=Calendar.getInstance();
+        long dInit,dEnd;
+
+
         for (int i = 0; i < numTrips; i++) {
+            //Stage data
+            List<Stage> stages = new ArrayList<>();
+            String stageTittle, stageDescription;
+            int stagePrice = 0;
+            int totalPrice =0;
+            float commentStars;
+            float avgStars = 0;
+            Calendar stageDateInit;
+            //Comment data
+            List<Comment> comments = new ArrayList<>();
+            String commentTittle, commentAuthor, comment;
+
             randomNumber = ThreadLocalRandom.current().nextInt(min, max);
+            randomPriceStage = ThreadLocalRandom.current().nextInt(50, 200);
+
             code = "XX"+i+"-"+randomNumber;
             cityInit = Constants.cityInit[randomNumber % Constants.cityInit.length];
             cityEnd = Constants.cities[randomNumber % Constants.cities.length];
             url = Constants.urlImagenes[randomNumber % Constants.urlImagenes.length];
             descripcion = "Una travesía ideal que termina en " + cityEnd;
-            dateInit.add(Calendar.DAY_OF_MONTH, randomNumber % 60);
-            dateEnd = (Calendar) dateInit.clone();
-            dateEnd.add(Calendar.DAY_OF_MONTH, 3 + randomNumber % 8);
+
+            dateInit=(Calendar)dateActual.clone();
+            dateInit.add(Calendar.DAY_OF_MONTH,randomNumber%60);
+            dInit=dateInit.getTimeInMillis()/1000;
+            dateEnd=(Calendar)dateInit.clone();
+            dateEnd.add(Calendar.DAY_OF_MONTH,3+ randomNumber%8);
+            dEnd=dateEnd.getTimeInMillis()/1000;
 
             //Create Stages arrayList
             // // Stage(String tittle, String description, Double price, Calendar dateInit)
             for (int k = 0; k < numStages; k++) {
                 stageTittle = Constants.cities[randomNumber % Constants.cities.length ];
                 stageDescription = "Parada en "+ stageTittle;
-                stagePrice = randomNumber;
+                stagePrice = randomPriceStage;
                 stageDateInit = (Calendar) dateInit.clone();
                 stageDateInit.add(Calendar.DAY_OF_MONTH, randomNumber%60);
 
@@ -185,13 +212,13 @@ public class Trip implements Serializable {
                 float cS = comments.get(m).stars;
                 totalStars += cS;
                 avgStars = totalStars/comments.size();
+
             }
 
-            System.out.println("Average: "+avgStars);
-            //Trip(String cityInit, String cityEnd, String description, Stage[] stages,Comment[] comments, String code, Double price, Calendar dateInit, Calendar dateEnd, String imageUrl)
-            trips.add(new Trip(cityInit, cityEnd, descripcion, stages, comments, code, totalPrice, dateInit, dateEnd, url, avgStars));
+            //Trip(String cityInit, String cityEnd, String description, Stage[] stages,Comment[] comments, String code, Double price, long dateInit, long dateEnd, String imageUrl, boolean fav)
+            trips.add(new Trip(cityInit, cityEnd, descripcion, stages, comments, code, totalPrice, dInit, dEnd, url, avgStars, false));
         }
-        return trips;
+        return (ArrayList<Trip>) trips;
     }
 }
 

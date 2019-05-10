@@ -2,36 +2,100 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/shortcut_cardview"
+    android:id="@+id/trip_cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
+    android:layout_margin="10dp"
+    app:cardBackgroundColor="#00000000"
+    app:cardCornerRadius="4dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:layout_marginBottom="5dp"
-        android:padding="10dp">
-
-        <ImageView
-            android:id="@+id/trip_picture"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-
-            tools:srcCompat="@tools:sample/avatars" />
+        android:background="?android:attr/selectableItemBackground">
 
         <LinearLayout
-            android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginBottom="5dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            >
+
+            <ImageView
+                android:id="@+id/trip_picture"
+                android:layout_width="84dp"
+                android:layout_height="92dp"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="Imagen"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/trip_cityInit_d"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Salida"
+                            android:textDirection="rtl" />
+
+                        <ImageView
+                            android:id="@+id/filter_dateInit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:contentDescription="flecha"
+                            app:srcCompat="@android:drawable/ic_media_ff" />
+
+                        <TextView
+                            android:id="@+id/trip_cityEnd_d"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Destino"
+                            android:textDirection="ltr" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/trip_title_d"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Nombre de destino"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic" />
+
+                    <CheckBox
+                        android:id="@+id/trip_fav"
+                        android:layout_width="61dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/checkbox_fav_selector"
+                        android:button="@null"/>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -39,51 +103,59 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/trip_cityInit"
-                        android:layout_width="match_parent"
+                        android:id="@+id/trip_dateInit"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Salida" />
-
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_media_ff" />
+                        android:text="Fecha salida" />
 
                     <TextView
-                        android:id="@+id/trip_cityEnd"
-                        android:layout_width="match_parent"
+                        android:id="@+id/trip_dateEnd"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Destino" />
+                        android:text="Fecha llegada" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/trip_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Precio"
+                        android:textColor="#F44336"
+                        android:textColorLink="#E91E63"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/trip_price2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="PrecioFake" />
+
+                    <RatingBar
+                        android:id="@+id/trip_ratingBar"
+                        style="@android:style/Widget.Material.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="10dp"
+                        android:max="5"
+                        android:numStars="5"
+                        android:progressTint="#FFC107"
+                        android:rating="5" />
+                </LinearLayout>
+
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/trip_tittle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:gravity="center"
-                android:text="Nombre de apartado"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/trip_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Descripción algo más larga para el apartado" />
-
-            <RatingBar
-                android:id="@+id/trip_ratingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:max="5"
-                android:numStars="5" />
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
+
 
 </android.support.v7.widget.CardView>
