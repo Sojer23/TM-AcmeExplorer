@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,9 @@ import com.example.acmeexplorer.Entities.Trip;
 import com.example.acmeexplorer.R;
 import com.example.acmeexplorer.TripDetailsActivity;
 import com.example.acmeexplorer.Utils.Utils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -28,6 +32,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
 
 
     private Context context;
+    private FirebaseAuth mAuth;
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
@@ -87,6 +92,10 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
     // Involves populating data into the item through holder
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
+
+        mAuth = FirebaseAuth.getInstance();
+
+
         // Get the data model based on position
         final Trip trip = mTrips.get(position);
 
@@ -124,6 +133,27 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
                     .into(IVPicture);
         }
 
+        StorageReference tripImageReference = FirebaseStorage.getInstance().getReference("images/trips/"+textViewTittle.getText().toString()+".png");
+
+        Log.e("ERROR", "Downloading image from: "+tripImageReference.toString());
+
+        tripImageReference.getDownloadUrl().addOnCompleteListener(listener -> {
+            try{
+                if (listener.isSuccessful() && listener.getResult() != null && listener.getResult().getPath() != null) {
+                    Picasso.get()
+                            .load(listener.getResult())
+                            .placeholder(android.R.drawable.ic_menu_myplaces)
+                            .error(android.R.drawable.ic_menu_myplaces)
+                            .into(IVPicture);
+                }else{
+                    //Toast.makeText(TripDetailsActivity.this, "No existe imagen de portada para este viaje", Toast.LENGTH_SHORT).show();
+                }
+            }catch(Exception e){
+                Log.e("ERROR", "Downloading image exception: "+e.toString());
+            }
+
+        });
+
         checkBoxFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,6 +182,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
                 intent.putExtra("trip_url", trip.getImageUrl());
                 intent.putExtra("trip_rating", trip.getTotalStars());
                 intent.putExtra("trip_description", trip.getDescription());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });

@@ -165,11 +165,10 @@
             android:layout_height="wrap_content"
             android:text="Descripción" />
 
-        <ImageView
-            android:id="@+id/trip_image_d"
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
