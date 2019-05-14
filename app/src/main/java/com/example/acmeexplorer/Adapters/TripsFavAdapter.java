@@ -43,7 +43,7 @@ public class TripsFavAdapter extends RecyclerView.Adapter<TripsFavAdapter.ViewHo
         public TextView textViewCityInit;
         public TextView textViewCityEnd;
         public TextView textViewDateInit;
-        public TextView textViewDateEnd,textViewPrice, textViewPriceFake;
+        public TextView textViewDateEnd, textViewPrice, textViewPriceFake;
         public ImageView IVPicture;
         public RatingBar ratingTrip;
         public CheckBox checkBoxFav;
@@ -75,7 +75,7 @@ public class TripsFavAdapter extends RecyclerView.Adapter<TripsFavAdapter.ViewHo
 
     // Pass in the trips array into the constructor
     public TripsFavAdapter(Context context, List<Trip> trips) {
-        this.context =context;
+        this.context = context;
         mTrips = trips;
     }
 
@@ -102,7 +102,7 @@ public class TripsFavAdapter extends RecyclerView.Adapter<TripsFavAdapter.ViewHo
         // Get the data model based on position
         final Trip trip = mTrips.get(position);
 
-        if(trip.isFav()){
+        if (trip.isFav()) {
             // Set item views based on your views and data model
             //Set the content
             TextView textViewTittle = viewHolder.textViewTittle;
@@ -118,13 +118,13 @@ public class TripsFavAdapter extends RecyclerView.Adapter<TripsFavAdapter.ViewHo
             RatingBar ratingTrip = viewHolder.ratingTrip;
 
 
-            textViewTittle.setText("Viaje a "+trip.getCityEnd());
+            textViewTittle.setText(trip.getCityEnd());
             textViewCityInit.setText(trip.getCityInit());
             textViewCityEnd.setText(trip.getCityEnd());
             textViewDateInit.setText(Utils.formateaFecha(trip.getDateInit()));
             textViewDateEnd.setText(Utils.formateaFecha(trip.getDateEnd()));
-            textViewPrice.setText(trip.getPrice()+"€");
-            textViewPriceFake.setText((trip.getPrice()+100)+"€");
+            textViewPrice.setText(trip.getPrice() + "€");
+            textViewPriceFake.setText((trip.getPrice() + 100) + "€");
             textViewPriceFake.setPaintFlags(textViewPriceFake.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             ratingTrip.setRating(trip.getTotalStars());
             checkBoxFav.setChecked(trip.isFav());
@@ -137,26 +137,28 @@ public class TripsFavAdapter extends RecyclerView.Adapter<TripsFavAdapter.ViewHo
                         .into(IVPicture);
             }
 
-            StorageReference tripImageReference = FirebaseStorage.getInstance().getReference("images/trips/"+textViewTittle.getText().toString()+".png");
+            try {
+                StorageReference tripImageReference = FirebaseStorage.getInstance().getReference("images/trips/" + textViewTittle.getText().toString() + ".png");
 
-            Log.e("ERROR", "Downloading image from: "+tripImageReference.toString());
+                Log.e("ERROR", "Downloading image from: " + tripImageReference.toString());
 
-            tripImageReference.getDownloadUrl().addOnCompleteListener(listener -> {
-                try{
+                tripImageReference.getDownloadUrl().addOnCompleteListener(listener -> {
+
                     if (listener.isSuccessful() && listener.getResult() != null && listener.getResult().getPath() != null) {
                         Picasso.get()
                                 .load(listener.getResult())
                                 .placeholder(android.R.drawable.ic_menu_myplaces)
                                 .error(android.R.drawable.ic_menu_myplaces)
                                 .into(IVPicture);
-                    }else{
+                    } else {
                         //Toast.makeText(TripDetailsActivity.this, "No existe imagen de portada para este viaje", Toast.LENGTH_SHORT).show();
+                        Log.e("ERROR", "IMAGE NOT FOUND FOR TRIP: "+ textViewTittle.getText().toString());
                     }
-                }catch(Exception e){
-                    Log.e("ERROR", "Downloading image exception: "+e.toString());
-                }
+                });
+            } catch (Exception e) {
+                Log.e("ERROR", "Downloading image exception: " + e.toString());
+            }
 
-            });
 
             checkBoxFav.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -180,7 +182,6 @@ public class TripsFavAdapter extends RecyclerView.Adapter<TripsFavAdapter.ViewHo
                     context.startActivity(intent);
                 }
             });
-
 
 
         }

@@ -9,4 +9,20 @@
     <string name="setting_profile_picture_error_uploading_title" tools:ignore="TypographyDashes">Error en la subida de imagen, revise su conexión a internet</string>
     <string name="setting_profile_picture_picked_title" tools:ignore="TypographyDashes">Imagen seleccionada correctamente</string>
     <string name="setting_profile_picture_upload_title" tools:ignore="TypographyDashes">Imagen subida con éxito</string>
+    <string name="allow_fine_location">Permitir</string>
+    <string name="location_not_allowed">Localización no permitida</string>
+    <string name="allow_fine_location_question">Necesitamos conocer tu ubicación para mostrarla en el mapa</string>
+    <string name="allow_fine_location_question_button">Permitir</string>
+    <string name="location_system_not_configured">La ubicación no está correctamente configurada</string>
+    <string name="location_system_not_configured_button">Configurar</string>
+    <string name="allow_fine_location_correct">Perfecto, ya podemos mostrar tu ubicación</string>
+    <string name="allow_fine_location_error">Seguimos sin poder mostrar tu ubicación</string>
+    <string name="service_not_available">Servicio de geocodificación no disponible</string>
+    <string name="invalid_lat_long_used">Localización no válida</string>
+    <string name="no_address_found">No se ha encontrado ninguna dirección</string>
+    <string name="channel_name">Canal por defecto</string>
+    <string name="channel_description">Este es el canal por defecto de la app</string>
+    <string name="default_notification_channel_id">default_notification_channel_id</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="google_maps_key_1">AIzaSyAWfjX5qee6puRa2crweqgD60xOHF5Emjc</string>
 </resources>

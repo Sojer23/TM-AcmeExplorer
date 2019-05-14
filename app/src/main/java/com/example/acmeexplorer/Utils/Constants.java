@@ -1,6 +1,7 @@
 package com.example.acmeexplorer.Utils;
 
 import com.example.acmeexplorer.Entities.Option;
+import com.example.acmeexplorer.MapActivity;
 import com.example.acmeexplorer.TripFavActivity;
 import com.example.acmeexplorer.TripListActivity;
 import com.example.acmeexplorer.TripDetailsActivity;
@@ -10,7 +11,8 @@ public final class Constants {
     //MENU ACTIVITY
     public final static Option[] menuOptions = {
             new Option("Viajes disponibles", "https://s3-eu-west-1.amazonaws.com/acme-explorer/world.png", "Explorar alguno de nuestros destinos", TripListActivity.class),
-            new Option("Viajes guardados", "https://s3-eu-west-1.amazonaws.com/acme-explorer/ecologism.png", "Revisa tus viajes favoritos", TripFavActivity.class)};
+            new Option("Viajes guardados", "https://s3-eu-west-1.amazonaws.com/acme-explorer/ecologism.png", "Revisa tus viajes favoritos", TripFavActivity.class),
+            new Option("Ubicaciones", "https://s3-eu-west-1.amazonaws.com/acme-explorer/map.png", "Revisa tu ubicación", MapActivity.class)};
 
 
     //TRIP ACTIVITY

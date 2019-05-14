@@ -165,10 +165,13 @@
             android:layout_height="wrap_content"
             android:text="Descripción" />
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/mapView_d"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="235dp"
+            tools:context=".MapActivity" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
