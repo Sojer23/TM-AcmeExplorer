@@ -2,6 +2,7 @@
     <string name="app_name">Acme Explorer</string>
     <string name="title_activity_test_scroll_activity"></string>
     <string name="action_settings">Settings</string>
+    <string name="arrow_right">➡</string>
     <string name="default_web_client" tools:ignore="TypographyDashes">634682680190-lhsdv2puqfcqpsulhktv6p18ibvpbteq.apps.googleusercontent.com</string>
     <string name="setting_profile_picture_title" tools:ignore="TypographyDashes">Elegir Imagen</string>
     <string name="setting_profile_picture_error_title" tools:ignore="TypographyDashes">Error en la selección de imagen</string>

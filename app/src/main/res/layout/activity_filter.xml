@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="25dp"
-    tools:context=".FilterActivity">
+    tools:context=".FilterActivity"
+    android:background="@drawable/login_bg">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="25dp"
                 android:background="#009688"
-                android:backgroundTint="#009688"
+                android:backgroundTint="#F8B948"
                 android:text="Filtro de Viajes"
                 android:textAlignment="center"
                 android:textSize="24sp"
@@ -175,7 +176,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:backgroundTint="#009688"
+                        android:textColor="#FFFFFF"
+                        android:backgroundTint="#232F3E"
                         android:text="APLICAR" />
 
                     <Button
@@ -183,7 +185,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:backgroundTint="#009688"
+                        android:textColor="#FFFFFF"
+                        android:background="#A9EE6060"
                         android:clickable="false"
                         android:onClick="deleteFilter"
                         android:text="BORRAR" />

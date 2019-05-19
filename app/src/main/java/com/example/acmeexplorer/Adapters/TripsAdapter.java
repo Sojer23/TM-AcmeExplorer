@@ -146,7 +146,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
                             .error(android.R.drawable.ic_menu_myplaces)
                             .into(IVPicture);
                 }else{
-                    //Toast.makeText(TripDetailsActivity.this, "No existe imagen de portada para este viaje", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "No existe imagen de portada para este viaje", Toast.LENGTH_SHORT).show();
                 }
             }catch(Exception e){
                 Log.e("ERROR", "Downloading image exception: "+e.toString());

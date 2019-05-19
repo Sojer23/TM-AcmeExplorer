@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -41,14 +43,14 @@ public class PushNotification extends FirebaseMessagingService {
                     .setSmallIcon(R.drawable.acme_explorer_circle_logo)
                     .setStyle(new NotificationCompat.InboxStyle())
                     .setStyle(new NotificationCompat.BigTextStyle()
-                            .bigText("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset"))
+                            .bigText("Próximamente podrás disfrutar de todas las ofertas"))
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.acme_explorer_circle_logo))
-                    .setContentTitle("Título")
-                    .setContentText("Contenido de la notificación")
+                    .setContentTitle("OFERTAS EN ACME EXPLORER")
+                    .setContentText("Pulsa para ver")
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
                     .build();
-        }else{
+        } else {
             customNotification = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
                     .setSmallIcon(R.drawable.acme_explorer_circle_logo)
                     .setStyle(new NotificationCompat.InboxStyle())
@@ -76,15 +78,18 @@ public class PushNotification extends FirebaseMessagingService {
 
     public static void sendRegistrationToServer(final String refreshedToken, final Context context) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        String userId = "example123ds123";
-        DatabaseReference myRef = database.getReference("users/" + userId + "/token_push");
-        myRef.setValue(refreshedToken).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Log.e("ERROR", "Refreshed token: " + refreshedToken);
-                Toast.makeText(context, refreshedToken, Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference myRef = database.getReference("users/" + currentUserID + "/token_push");
+            myRef.setValue(refreshedToken).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Log.e("ERROR", "Refreshed token: " + refreshedToken);
+                    //Toast.makeText(context, "Token de notificaiones guardado", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
     }
 
     private void createNotificationChannel() {

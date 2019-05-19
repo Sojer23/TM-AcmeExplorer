@@ -31,17 +31,7 @@ public class SplashActivity extends AppCompatActivity {
         }, DURATION_SPLASH);
 
 
-        configureNotifications();
     }
 
-    private void configureNotifications() {
-        FirebaseMessaging.getInstance().subscribeToTopic("general");
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
-                    @Override
-                    public void onSuccess(InstanceIdResult instanceIdResult) {
-                        PushNotification.sendRegistrationToServer(instanceIdResult.getToken(), SplashActivity.this);
-                    }
-                });
-    }
+
 }

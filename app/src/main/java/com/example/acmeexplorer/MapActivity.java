@@ -92,7 +92,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             Log.e("ERROR", addresses.toString());
             if (addresses.size() > 0) {
-                Log.e("ERROR","ADRESSE "+ addresses.get(0) +",LAT :" + addresses.get(0).getLatitude() +", LONG :" + addresses.get(0).getLongitude() );
+                Log.e("ERROR", "ADRESSE " + addresses.get(0) + ",LAT :" + addresses.get(0).getLatitude() + ", LONG :" + addresses.get(0).getLongitude());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -104,7 +104,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
-        if (map != null){
+        if (map != null) {
             checkLocationSettings();
         }
     }
@@ -150,7 +150,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             if (location != null) {
                                 MarkerOptions marker = new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("Posición");
                                 map.addMarker(marker);
-                                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),8));
+                                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 8));
                             }
                         }
                     });
@@ -172,8 +172,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     public void checkLocationSettings() {
         final LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
+        //locationRequest.setInterval(10000);
+        //locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
@@ -242,6 +242,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
     private LocationCallback locationCallback;
+
     private void requestLocationUpdates(LocationRequest locationRequest) {
         locationCallback = new LocationCallback() {
             @Override
@@ -271,7 +272,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
-    private void showCurrentLocationAddress(Location location){
+    private void showCurrentLocationAddress(Location location) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
         String errorMessage = "";
@@ -289,7 +290,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             errorMessage = getString(R.string.invalid_lat_long_used);
         }
 
-        if (addresses == null || addresses.size()  == 0) {
+        if (addresses == null || addresses.size() == 0) {
             if (errorMessage.isEmpty()) {
                 errorMessage = getString(R.string.no_address_found);
             }
@@ -305,9 +306,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onPause() {
         super.onPause();
-        fusedLocationClient.removeLocationUpdates(locationCallback);
+        if (locationCallback != null) {
+            fusedLocationClient.removeLocationUpdates(locationCallback);
+        }
     }
-
 
 
 }

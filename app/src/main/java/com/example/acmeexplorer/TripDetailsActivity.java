@@ -101,7 +101,7 @@ public class TripDetailsActivity extends AppCompatActivity implements OnMapReady
 
         //FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
-        //requestPermissions();
+
 
         tripTitleDetail = findViewById(R.id.trip_title_d);
         TextView tripPriceDetail = findViewById(R.id.trip_price_d);
@@ -155,7 +155,7 @@ public class TripDetailsActivity extends AppCompatActivity implements OnMapReady
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showImagePicker();
+                requestPermissions();
             }
         });
 
@@ -194,22 +194,6 @@ public class TripDetailsActivity extends AppCompatActivity implements OnMapReady
 
         //Getting smartphone location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-
-       /* Geocoder geoCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-        try {
-            List<Address> addresses = geoCoder.getFromLocationName(
-                    tripCityEndDetail.getText().toString(), 1);
-
-            Log.e("ERROR", addresses.toString());
-            if (addresses.size() > 0) {
-                Log.e("ERROR","ADDRESS "+ addresses.get(0) +",LAT :" + addresses.get(0).getLatitude() +", LONG :" + addresses.get(0).getLongitude() );
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
 
         //////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////
@@ -255,6 +239,9 @@ public class TripDetailsActivity extends AppCompatActivity implements OnMapReady
         } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             showImagePicker();
+        }else{
+            permissionIndex = 0;
+            requestPermissions();
         }
     }
 
@@ -476,8 +463,8 @@ public class TripDetailsActivity extends AppCompatActivity implements OnMapReady
 
     public void checkLocationSettings() {
         final LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
+        //locationRequest.setInterval(10000);
+        //locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);

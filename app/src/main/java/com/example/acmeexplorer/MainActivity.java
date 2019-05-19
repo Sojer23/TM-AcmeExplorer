@@ -18,8 +18,12 @@ import android.widget.TextView;
 import com.example.acmeexplorer.Entities.Option;
 import com.example.acmeexplorer.Security.LoginActivity;
 import com.example.acmeexplorer.Utils.Constants;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -69,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
             // FirebaseUser.getIdToken() instead.
             String uid = user.getUid();
         }
+
+        //Configuración de las notificaciones
+        configureNotifications();
+
     }
 
 
@@ -76,6 +84,17 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         Intent i = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(i);
+    }
+
+    private void configureNotifications() {
+        FirebaseMessaging.getInstance().subscribeToTopic("general");
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                    @Override
+                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                        PushNotification.sendRegistrationToServer(instanceIdResult.getToken(), MainActivity.this);
+                    }
+                });
     }
 
 
