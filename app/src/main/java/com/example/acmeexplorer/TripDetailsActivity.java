@@ -35,7 +35,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.example.acmeexplorer.Entities.CityWeather;
 import com.example.acmeexplorer.Security.LoginActivity;
+import com.example.acmeexplorer.Services.DownloadImageTask;
+import com.example.acmeexplorer.Services.OpenWeatherMapService;
+import com.example.acmeexplorer.Services.WeatherServiceAsync;
 import com.example.acmeexplorer.Utils.Utils;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -61,6 +65,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -70,9 +75,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TripDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -198,6 +210,42 @@ public class TripDetailsActivity extends AppCompatActivity implements OnMapReady
         //////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////
 
+
+        //////////////////////////////////////////////////////////////////
+        /////////////////////API OPEWEATHER CONFIGURATION/////////////////
+        /////////////////////////////////////////////////////////////////
+        String serverURL = "http://api.openweathermap.org/data/2.5/weather?q=sevilla&APPID=5391617c203ef792feebc0037f3202ba";
+        WeatherServiceAsync task = new WeatherServiceAsync(this);
+        task.execute(serverURL);
+
+        /*final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://api.openweathermap.org/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build();
+
+        final OpenWeatherMapService service = retrofit.create(OpenWeatherMapService.class);
+
+        service.cityWeatherInfo(tripCityEndDetail.getText().toString(), "5391617c203ef792feebc0037f3202ba").enqueue(new Callback<CityWeather>() {
+            @Override
+            public void onResponse(Call<CityWeather> call, Response<CityWeather> response) {
+                Snackbar.make(findViewById(R.id.trip_description_d), "Error en la petición del tiempo",
+                        Snackbar.LENGTH_INDEFINITE).show();
+                responseBody.setText(new Gson().toJson(response.body()));
+            }
+
+            @Override
+            public void onFailure(Call<CityWeather> call, Throwable t) {
+                Snackbar.make(findViewById(R.id.trip_description_d), "Error en la petición del tiempo",
+                        Snackbar.LENGTH_INDEFINITE).show();
+            }
+        });*/
 
     }
 
@@ -560,5 +608,59 @@ public class TripDetailsActivity extends AppCompatActivity implements OnMapReady
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+
+    public void setWeatherImage(String urlImage){
+
+        ImageView view = (ImageView) findViewById(R.id.imageIcon);
+        DownloadImageTask task2 = new DownloadImageTask(view);
+        task2.execute(urlImage);
+    }
+
+    public void setHumidity(double humidity){
+        TextView view = (TextView) findViewById(R.id.textHumidityValue);
+        int humidityInt = (int) humidity;
+        view.setText(String.valueOf(humidityInt) + " %");
+    }
+
+    public void setTemp(double temp){
+        TextView view = (TextView) findViewById(R.id.textTempValue);
+        int tempCelsius = kelvinToCelsius(temp);
+        view.setText(String.valueOf(tempCelsius) + " º");
+    }
+
+
+    public void setTempMin(double tempmin){
+        TextView view = (TextView) findViewById(R.id.textTempMinValue);
+        int tempminCelsius = kelvinToCelsius(tempmin);
+        view.setText(String.valueOf(tempminCelsius) + " º");
+    }
+
+    public void setTempMax(double tempmax){
+        TextView view = (TextView) findViewById(R.id.textTempMaxValue);
+        int tempmaxCelsius = kelvinToCelsius(tempmax);
+        view.setText(String.valueOf(tempmaxCelsius) + " º");
+    }
+
+    public void setWindSpeed(double windSpeed){
+        TextView view = (TextView) findViewById(R.id.textWindSpeedValue);
+        int windSpeedInt = (int) (windSpeed);
+        view.setText(String.valueOf(windSpeedInt) + " km/h");
+    }
+
+    public void setDescription(String description){
+        TextView view = (TextView) findViewById(R.id.textDescriptionValue);
+        view.setText(String.valueOf(description));
+    }
+
+
+    public int kelvinToCelsius(double x){
+        x = x - 273.15;
+        return (int) x;
+    }
+
+    public String getTripCityEnd(){
+        return tripCityEndDetail.getText().toString();
     }
 }
